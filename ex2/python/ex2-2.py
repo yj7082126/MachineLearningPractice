@@ -6,16 +6,17 @@ Created on Mon Mar 19 15:43:34 2018
 """
 
 import os
+import os.path as path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(path.dirname(path.dirname(path.abspath(__file__))))
 
 #%% Initialization
 
-data = pd.read_csv("ex2data2.txt", header=None).as_matrix()
+data = pd.read_csv("data/ex2data2.txt", header=None).as_matrix()
 X = data[:, 0:2]
 y = data[:, 2:]
 

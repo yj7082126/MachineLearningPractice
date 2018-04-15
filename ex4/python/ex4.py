@@ -8,7 +8,6 @@ Created on Wed Mar 21 16:17:58 2018
 import os
 import os.path as path
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from scipy.optimize import minimize
@@ -291,4 +290,5 @@ input("Program Paused. Press enter to continue. \n")
 
 predictions = predict(theta1, theta2, X)
 accuracy = np.mean(y == predictions.reshape((-1, 1))) * 100
+
 print("Training Accuracy with neural network: ", accuracy, "%")

@@ -26,6 +26,7 @@ y = data['y']
 mat = loadmat('data/ex3weights.mat')
 Theta1 = mat['Theta1']
 Theta2 = mat['Theta2']
+
 #%% Function Definition
 
 def sigmoid(X, theta):

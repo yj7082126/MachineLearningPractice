@@ -23,7 +23,7 @@ y = data['y']
 
 #%% Function Definition
 
-def visualizeBoundary(X, y, model):
+def visualizeBoundaryLinear(X, y, model):
     weights = model.coef_[0]
     intercept = model.intercept_[0]
     
@@ -37,6 +37,23 @@ def visualizeBoundary(X, y, model):
     plt.scatter(X[pos, 0], X[pos, 1], c='black', marker='+')
     plt.scatter(X[neg, 0], X[neg, 1], c='yellow', edgecolors='black', marker='o')
     plt.plot(Xs, ys)
+    plt.show()
+
+def visualizeBoundary(X, y, model):   
+    X1 = np.linspace(X.min(axis=0)[0], X.max(axis=0)[0], 100)
+    X2 = np.linspace(X.min(axis=0)[1], X.max(axis=0)[1], 100)
+    X1, X2 = np.meshgrid(X1, X2)
+    
+    Xs = np.append(X1.reshape(-1, 1), X2.reshape(-1, 1), axis=1)
+    ys = svm.predict(Xs).reshape(X1.shape)
+    
+    pos = (y == 1).flatten()
+    neg = (y == 0).flatten()
+    
+    fig, ax = plt.subplots(figsize=(12,8))
+    plt.scatter(X[pos, 0], X[pos, 1], c='black', marker='+')
+    plt.scatter(X[neg, 0], X[neg, 1], c='yellow', edgecolors='black', marker='o')
+    plt.contour(X1, X2, ys)
     plt.show()
     
 def dataset_params(X, y, Xval, yval):
@@ -54,7 +71,7 @@ def dataset_params(X, y, Xval, yval):
     return (Cv[max_c_ind], sigv[max_s_ind])
     
 def gauss(x1, x2, sigma):
-    return np.exp(- (np.square(np.linalg.norm(x1 - x2)).sum())/(2 * (sigma ** 2)))
+    return np.exp(- (np.square(np.linalg.norm(x1 - x2)).sum())/(2 * (np.square(sigma))))
 
 #%% Plot Data
     
@@ -76,9 +93,12 @@ C = 1
 svm = SVC(kernel='linear', C=C)
 svm.fit(X, y.flatten())
 
-visualizeBoundary(X, y, svm)
+visualizeBoundaryLinear(X, y, svm)
 
-#%% 
+input("Program Paused. Press enter to continue. \n")
+
+#%% Implementing Gaussian Kernel
+
 print('Evaluating the Gaussian Kernel \n')
 
 x1 = np.array([1, 2, 1])
@@ -90,14 +110,17 @@ print('Gaussian Kernel between x1= [1; 2; 1], x2 = [0; 4; -1], sigma = 2: ',
       sim, '\n')
 print('This value should be about 0.32465 \n')
 
-#%%
-print('Loading Data \n')
-data = loadmat('ex6data2.mat')
+input("Program Paused. Press enter to continue. \n")
+
+#%% Initialization #2
+
+data = loadmat('data/ex6data2.mat')
 X = data['X']
 y = data['y']
 
-#%%
-print('Visualizing Data \n')
+#%% Plot Data #2
+    
+print('Visualizing Data #2\n')
 pos = (y == 1).flatten()
 neg = (y == 0).flatten()
 
@@ -106,39 +129,31 @@ plt.scatter(X[pos, 0], X[pos, 1], c='black', marker='+')
 plt.scatter(X[neg, 0], X[neg, 1], c='yellow', edgecolors='black', marker='o')
 plt.show()
 
-#%%
+input("Program Paused. Press enter to continue. \n")
+
+#%% Training & Visualizing RBF Kernel SVM
+
 print('Training RBF Kernel SVM \n')
 C = 30
 sigma = 30
 svm = SVC(kernel='rbf', C=C, gamma=sigma)
 svm.fit(X, y.flatten())
 
-X1 = np.linspace(X.min(axis=0)[0], X.max(axis=0)[0], 100)
-X2 = np.linspace(X.min(axis=0)[1], X.max(axis=0)[1], 100)
-X1, X2 = np.meshgrid(X1, X2)
+visualizeBoundary(X, y, svm)
 
-Xs = np.append(X1.reshape(-1, 1), X2.reshape(-1, 1), axis=1)
-ys = svm.predict(Xs).reshape(X1.shape)
+input("Program Paused. Press enter to continue. \n")
 
-#%%
-pos = (y == 1).flatten()
-neg = (y == 0).flatten()
+#%% Initialization #3
 
-fig, ax = plt.subplots(figsize=(12,8))
-plt.scatter(X[pos, 0], X[pos, 1], c='black', marker='+')
-plt.scatter(X[neg, 0], X[neg, 1], c='yellow', edgecolors='black', marker='o')
-plt.contour(X1, X2, ys)
-plt.show()
-
-#%%
 print('Loading Data \n')
-data = loadmat('ex6data3.mat')
+data = loadmat('data/ex6data3.mat')
 X = data['X']
 y = data['y']
 Xval = data['Xval']
 yval = data['yval']
 
-#%%
+#%% Plot Data #3
+
 print('Visualizing Data \n')
 pos = (y == 1).flatten()
 neg = (y == 0).flatten()
@@ -148,24 +163,14 @@ plt.scatter(X[pos, 0], X[pos, 1], c='black', marker='+')
 plt.scatter(X[neg, 0], X[neg, 1], c='yellow', edgecolors='black', marker='o')
 plt.show()
 
-#%%
+input("Program Paused. Press enter to continue. \n")
+
+#%% Training & Visualizing RBF Kernel SVM
+
 C, sigma = dataset_params(X, y, Xval, yval)
 svm = SVC(kernel='rbf', C=C, gamma=sigma)
 svm.fit(X, y.flatten())
 
-X1 = np.linspace(X.min(axis=0)[0], X.max(axis=0)[0], 100)
-X2 = np.linspace(X.min(axis=0)[1], X.max(axis=0)[1], 100)
-X1, X2 = np.meshgrid(X1, X2)
+visualizeBoundary(X, y, svm)
 
-Xs = np.append(X1.reshape(-1, 1), X2.reshape(-1, 1), axis=1)
-ys = svm.predict(Xs).reshape(X1.shape)
-
-#%%
-pos = (y == 1).flatten()
-neg = (y == 0).flatten()
-
-fig, ax = plt.subplots(figsize=(12,8))
-plt.scatter(X[pos, 0], X[pos, 1], c='black', marker='+')
-plt.scatter(X[neg, 0], X[neg, 1], c='yellow', edgecolors='black', marker='o')
-plt.contour(X1, X2, ys)
-plt.show()
+input("Program Paused. Press enter to continue. \n")

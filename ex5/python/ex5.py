@@ -48,10 +48,11 @@ def train_linReg(X, y, lambd):
     return tt
 
 def learnCurve(X, y, Xval, yval, lambd):
-    error_train = np.zeros(len(y))
-    error_val = np.zeros(len(y))
+    m = len(y)
+    error_train = np.zeros(m)
+    error_val = np.zeros(m)
     
-    for i in range(len(y)):
+    for i in range(m):
         theta = train_linReg(X[:i+1], y[:i+1], lambd)['x']
         error_train[i] = linReg_costF(theta, X[:i+1], y[:i+1], 0)[0]
         error_val[i] = linReg_costF(theta, Xval, yval, 0)[0]
@@ -89,8 +90,9 @@ def plotFit(theta, mu, sig):
     plt.show()
  
 def validationCurve(X, y, Xval, yval, lambd_vec):
-    error_train = np.zeros(len(lambd_vec))
-    error_val = np.zeros(len(lambd_vec))
+    m = len(lambd_vec)
+    error_train = np.zeros(m)
+    error_val = np.zeros(m)
     
     for i in range(len(lambd_vec)):
         lambd = lambd_vec[i]

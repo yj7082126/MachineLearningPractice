@@ -143,4 +143,3 @@ ax1.set_xlim([0, 128])
 ax2.set_xlim([0, 128])
 ax1.imshow(A)
 ax2.imshow(X_recovered)
-
